@@ -5,11 +5,18 @@ import { saveProblem } from './parser';
 import * as vscode from 'vscode';
 import path from 'path';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
-import { isCodeforcesUrl, randomId } from './utils';
+import { 
+    isCodeforcesUrl,
+    isLuoguUrl,
+    isAtCoderUrl,
+    randomId 
+} from './utils';
 import {
     getDefaultLangPref,
     getLanguageId,
     useShortCodeForcesName,
+    useShortLuoguName,
+    useShortAtCoderName,
     getMenuChoices,
     getDefaultLanguageTemplateFileLocation,
 } from './preferences';
@@ -141,7 +148,15 @@ export const setupCompanionServer = () => {
 export const getProblemFileName = (problem: Problem, ext: string) => {
     if (isCodeforcesUrl(new URL(problem.url)) && useShortCodeForcesName()) {
         return `${getProblemName(problem.url)}.${ext}`;
-    } else {
+    } else if(isLuoguUrl(new URL(problem.url)) && useShortLuoguName()) {
+        // Url is like https://www.luogu.com.cn/problem/P1000
+        const parts = problem.url.split('/')
+        return `${parts[parts.length-1]}.${ext}`;
+    } else if(isAtCoderUrl(new URL(problem.url)) && useShortAtCoderName()) {
+        // Url is like https://atcoder.jp/contests/abc311/tasks/abc311_a
+        const parts = problem.url.split('/')
+        return `${parts[parts.length-1].replace('_','')}.${ext}`;
+    }else {
         console.log(
             isCodeforcesUrl(new URL(problem.url)),
             useShortCodeForcesName(),

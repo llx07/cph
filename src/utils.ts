@@ -102,6 +102,12 @@ export const isValidLanguage = (srcPath: string): boolean => {
 export const isCodeforcesUrl = (url: URL): boolean => {
     return url.hostname === 'codeforces.com';
 };
+export const isLuoguUrl = (url: URL): boolean => {
+    return url.hostname.indexOf('luogu.com.cn')!==-1;
+};
+export const isAtCoderUrl = (url: URL): boolean => {
+    return url.hostname === 'atcoder.jp';
+};
 
 export const ocAppend = (string: string) => {
     oc.append(string);
