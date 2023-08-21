@@ -146,6 +146,10 @@ export const setupCompanionServer = () => {
 };
 
 export const getProblemFileName = (problem: Problem, ext: string) => {
+    if(problem.url.indexOf('?')!==-1){
+        problem.url = problem.url.substring(0,problem.url.indexOf('?'));
+    }
+
     if (isCodeforcesUrl(new URL(problem.url)) && useShortCodeForcesName()) {
         return `${getProblemName(problem.url)}.${ext}`;
     } else if(isLuoguUrl(new URL(problem.url)) && useShortLuoguName()) {
